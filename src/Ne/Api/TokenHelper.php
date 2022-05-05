@@ -2,6 +2,8 @@
 
 namespace Ne\Api;
 
+use Exception;
+
 /**
  * @author Roy Arisse <support@perfacilis.com>
  * @copyright (c) 2022, Perfacilis
@@ -40,6 +42,14 @@ class TokenHelper
         $token = $client->request(Client::POST, Client::ENDPOINT_AUTH, $fields, [
             'Signature: ' . $this->getSignature($fields)
         ]);
+
+        // Invalid token response
+        if (!isset($token['token'])) {
+            throw new Exception(sprintf(
+                'Error: Invalid token response: %s',
+                json_encode($token)
+            ));
+        }
 
         // Update cache for later use
         $this->token_cache[$identifier] = $token;

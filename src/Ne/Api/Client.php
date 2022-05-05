@@ -26,9 +26,9 @@ class Client
     public const ENDPOINT_PING = 'ping';
     public const ENDPOINT_ORDERS = 'orders';
 
-    public function __construct(string $auth_token)
+    public function __construct(string $jwt)
     {
-        $this->token = $auth_token;
+        $this->token = $jwt;
     }
 
     public function get(string $endpoint, array $fields): array
@@ -51,16 +51,15 @@ class Client
         return $this->request(self::DELETE, $endpoint, $fields);
     }
 
-
     /**
-    * Make a request
-    *
-    * @param string $method self::GET, self::POST, etc.
-    * @param string $endpoint E.g. /api/v1/orders, full hostname will be added.
-    * @param array $fields Fields to be posted
-    * @param array $headers Flat array like ["Signature: 123456abcdef12346"]
-    * @return array
-    */
+     * Make a request
+     *
+     * @param string $method self::GET, self::POST, etc.
+     * @param string $endpoint E.g. /api/v1/orders, full hostname will be added.
+     * @param array $fields Fields to be posted
+     * @param array $headers Flat array like ["Signature: 123456abcdef12346"]
+     * @return array
+     */
     public function request(string $method, string $endpoint, array $fields, array $headers = []): array
     {
         // Build URL for GET request
@@ -115,7 +114,7 @@ class Client
                 $status_code,
                 $url,
                 $json
-            ));
+            ), $status_code);
         }
 
         if (!$json) {
@@ -163,8 +162,14 @@ class Client
         return $url;
     }
 
+    /**
+     * JSON encode fields to payload using JWT standard.
+     *
+     * @param array $fields
+     * @return string
+     */
     private function getPayload(array $fields): string
     {
-        return json_encode($fields);
+        return json_encode($fields, JSON_UNESCAPED_SLASHES);
     }
 }
