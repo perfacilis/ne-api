@@ -58,6 +58,20 @@ class TokenHelper
     }
 
     /**
+     * Read exp field from JWT token to determine if token is expired
+     *
+     * @param string $jwt_token
+     * @return bool
+     */
+    public static function isExpired(string $jwt_token): bool
+    {
+        [, $b64_payload] = explode('.', $jwt_token, 3);
+        $payload = json_decode(base64_decode($b64_payload), true);
+
+        return empty($payload['exp']) || $payload['exp'] <= time();
+    }
+
+    /**
      * Cached tokens
      */
     private $token_cache = [];
