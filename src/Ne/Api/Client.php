@@ -118,6 +118,10 @@ class Client
             ), $status_code);
         }
 
+        if ($status_code == 204) {
+            return [];
+        }
+
         if (!$json) {
             throw new Exception(sprintf(
                 'Error: Empty result from %s.',
