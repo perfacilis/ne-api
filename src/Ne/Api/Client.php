@@ -22,7 +22,7 @@ class Client
     /**
      * Endpoints
      */
-    public const BASE_URL = 'http://orders.ne.localhost/api/v1';
+    public const BASE_URL = 'http://orders.ne.nl/api/v1';
     public const ENDPOINT_AUTH = 'auth';
     public const ENDPOINT_PING = 'ping';
     public const ENDPOINT_ORDERS = 'orders';
