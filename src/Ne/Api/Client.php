@@ -17,11 +17,12 @@ class Client
     public const POST = 'POST';
     public const PUT = 'PUT';
     public const DELETE = 'DELETE';
+    public const PATCH = 'PATCH';
 
     /**
      * Endpoints
      */
-    public const BASE_URL = 'http://orders.ne.localhost/api/v1';
+    public const BASE_URL = 'http://orders.ne.nl/api/v1';
     public const ENDPOINT_AUTH = 'auth';
     public const ENDPOINT_PING = 'ping';
     public const ENDPOINT_ORDERS = 'orders';
@@ -115,6 +116,10 @@ class Client
                 $url,
                 $json
             ), $status_code);
+        }
+
+        if ($status_code == 204) {
+            return [];
         }
 
         if (!$json) {
